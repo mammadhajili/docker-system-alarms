@@ -1,0 +1,28 @@
+version: '3'
+volumes:
+   database:
+services:
+  postgre:
+    image: alarmer-postgre:latest
+    environment:
+    - POSTGRES_USER=username
+    - POSTGRES_PASSWORD=password
+    - POSTGRES_DB=dbname
+    ports:
+     - "5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+  etcd:
+    image: "quay.io/coreos/etcd:latest"
+    environment:
+    - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+    - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+    - ETCD_DATA_DIR=/etcd-data/default
+    command: "/usr/local/bin/etcd"
+    volumes:
+    - /var/lib/etcd:/etcd-data
+  app:
+    image: "alarmer:latest"
+    depends_on:
+    - postgre
+    - etcd

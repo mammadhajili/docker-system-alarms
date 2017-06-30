@@ -1,0 +1,13 @@
+etcd:
+  host: etcd
+  port: 2379
+databases:
+  dbname:
+    type: postgres
+    connection: host=host dbname=dbname user=username password=password
+    dbname: dbname
+
+mail:
+  host: mail_host
+  port: mail_port
+
